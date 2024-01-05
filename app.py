@@ -15,7 +15,7 @@ def about_modal():
     st.write("Here, you can analyze stock like historical data , fetch live data ,moving averages and also predict the future price.")
 
 # Load model and set up Streamlit header
-model = load_model("Stock Predictions Model.keras")
+model = load_model("/Stock Predictions Model.keras")
 #st.set_page_config(page_title='Stock Market Predictor', layout='wide')
 st.title(":chart_with_upwards_trend: Stock Trend Analysis")
 st.markdown('<style>div.block-container{padding-top:1.5rem;}</style>', unsafe_allow_html=True)
