@@ -298,29 +298,40 @@ fig.update_layout(
 
 st.plotly_chart(fig)
 
-def about_modal():
-    st.header(":page_with_curl: About")
-    st.write("This is the Stock Trend Analysis app by Anshu Yadav")
-    st.write("Here, you can analyze stock like historical data, fetch live data, moving averages, and also predict the future price.")
+import re
 
-def contact_form():
-    st.header(":memo: Contact Me")
-    name = st.text_input("Your Name")
-    email = st.text_input("Your Email")
-    message = st.text_area("Message")
+def save_contact_info(name, email, message):
+    with open('contact_info.txt', 'a') as file:
+        file.write(f"Name: {name}\n")
+        file.write(f"Email: {email}\n")
+        file.write(f"Message: {message}\n")
+        file.write("\n")  # Add a separator between entries
 
-    if st.button("Submit"):
-        if name.strip() == '' or email.strip() == '' or message.strip() == '':
-            st.warning("Please fill in all fields.")
-        else:
-            # Process the form (e.g., send email, store data, etc.)
-            st.success("Message sent successfully!")
+def validate_email(email):
+    # Using a simple regex pattern for email validation
+    pattern = r"[^@]+@[^@]+\.[^@]+"
+    return re.match(pattern, email)
 
-if __name__ == "__main__":
-    col1, col2 = st.columns([1, 1])
-    with col1:
-        contact_form()
-    with col2:
-        about_modal()
 
-    
+# Define columns for About and Contact Me sections
+col1, col2 = st.columns([1, 1])
+
+# About Section
+with col1:
+  st.header(":memo: Contact Me")
+  name = st.text_input("Your Name", key='name')
+  email = st.text_input("Your Email", key='email')
+  message = st.text_area("Message", key='message')
+
+  if st.button("Submit"):
+    if name.strip() == '' or not validate_email(email) or message.strip() == '':
+      st.warning("Please provide a valid email and fill in all required fields.")
+    else:
+      save_contact_info(name, email, message)
+      st.success("Message sent successfully!")
+
+# Contact Me Section
+with col2:
+  st.header(":page_with_curl: About")
+  st.write("This is the Stock Trend Analysis app.")
+  st.write("Here, you can analyze stock historical data, fetch live data, and predict future prices.")
